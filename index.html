@@ -136,7 +136,7 @@
                 && storedUserData.password === password) {
                 
                 localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = "login1.html";
+                window.location.href = "home.html";
             } else {
                 alert('Invalid credentials');
             }
@@ -159,7 +159,7 @@
 
         window.onload = function() {
             if (localStorage.getItem('isLoggedIn') === 'true') {
-                window.location.href = "login1.html";
+                window.location.href = "home.html";
             }
         }
     </script>
