@@ -1,167 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Sign Up</title>
+    <title>Button Navigation - App Style</title>
     <style>
+        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
         }
+        
+        /* Body styling */
         body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            margin: 0;
         }
+
+        /* Container with Card View */
         .container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            padding: 30px;
+            background-color: #ffffff;
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .input-field {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+
+        /* Header Styling */
+        h1 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Button styling */
+        .btn {
+            padding: 12px 20px;
+            margin: 20px 0;
             font-size: 16px;
-        }
-        .button {
-            background-color: #0072ff;
-            color: white;
-            padding: 15px;
-            width: 100%;
+            cursor: pointer;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
+            background-color: #FFD700;
+            color: black;
+            width: 80%;
+            max-width: 250px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .button:hover {
-            background-color: #0056d6;
-        }
-        .form-link {
-            margin-top: 10px;
-            color: #0072ff;
-            cursor: pointer;
-        }
-        .form-header {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .hidden {
-            display: none;
+
+        /* Button Hover effect */
+        .btn:hover {
+            background-color: #FFC107;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Login Form -->
-        <div id="login-form">
-            <div class="form-header">Login</div>
-            <input type="text" id="login-username" class="input-field" placeholder="Username or Email" required>
-            <input type="password" id="login-password" class="input-field" placeholder="Password" required>
-            <button class="button" onclick="loginUser()">Login</button>
-            <div class="form-link" onclick="showSignUp()">New here? Sign up</div>
-            <div class="form-link" onclick="showForgetPassword()">Forgot Password?</div>
-        </div>
+<div class="container">
+    <h1>Choose a Goal</h1>
+    <button class="btn" id="button1" onclick="navigateTo('home10.html')">home 10</button>
+    <button class="btn" id="button2" onclick="navigateTo('home12.html')">home 12</button>
+    <button class="btn" id="button3" onclick="navigateTo('home.html')">BSc (Ag)</button>
+</div>
 
-        <!-- Sign Up Form -->
-        <div id="sign-up-form" class="hidden">
-            <div class="form-header">Sign Up</div>
-            <input type="text" id="sign-up-username" class="input-field" placeholder="Username" required>
-            <input type="email" id="sign-up-email" class="input-field" placeholder="Email" required>
-            <input type="password" id="sign-up-password" class="input-field" placeholder="Password" required>
-            <button class="button" onclick="signUpUser()">Sign Up</button>
-            <div class="form-link" onclick="showLogin()">Already have an account? Login</div>
-        </div>
-
-        <!-- Forget Password Form -->
-        <div id="forget-password-form" class="hidden">
-            <div class="form-header">Reset Password</div>
-            <input type="email" id="reset-email" class="input-field" placeholder="Enter your registered email" required>
-            <input type="password" id="new-password" class="input-field" placeholder="New Password" required>
-            <button class="button" onclick="resetPassword()">Reset Password</button>
-            <div class="form-link" onclick="showLogin()">Back to Login</div>
-        </div>
-    </div>
-
-    <script>
-        function showLogin() {
-            document.getElementById('login-form').classList.remove('hidden');
-            document.getElementById('sign-up-form').classList.add('hidden');
-            document.getElementById('forget-password-form').classList.add('hidden');
+<script>
+    // Check if there's a saved page in Local Storage
+    window.onload = function() {
+        var savedPage = localStorage.getItem("selectedPage");
+        if (savedPage) {
+            window.location.href = savedPage;
         }
+    };
 
-        function showSignUp() {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('sign-up-form').classList.remove('hidden');
-            document.getElementById('forget-password-form').classList.add('hidden');
-        }
+    function navigateTo(page) {
+        // Save the clicked page in Local Storage
+        localStorage.setItem("selectedPage", page);
+        // Navigate to the selected page
+        window.location.href = page;
+    }
+</script>
 
-        function showForgetPassword() {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('sign-up-form').classList.add('hidden');
-            document.getElementById('forget-password-form').classList.remove('hidden');
-        }
-
-        function signUpUser() {
-            const userData = {
-                username: document.getElementById('sign-up-username').value,
-                email: document.getElementById('sign-up-email').value,
-                password: document.getElementById('sign-up-password').value
-            };
-            localStorage.setItem('userData', JSON.stringify(userData));
-            alert('Sign up successful! Please login.');
-            showLogin();
-        }
-
-        function loginUser() {
-            const storedUserData = JSON.parse(localStorage.getItem('userData'));
-            const usernameOrEmail = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-
-            if (storedUserData && 
-                (storedUserData.username === usernameOrEmail || storedUserData.email === usernameOrEmail) 
-                && storedUserData.password === password) {
-                
-                localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = "home.html";
-            } else {
-                alert('Invalid credentials');
-            }
-        }
-
-        function resetPassword() {
-            const storedUserData = JSON.parse(localStorage.getItem('userData'));
-            const email = document.getElementById('reset-email').value;
-            const newPassword = document.getElementById('new-password').value;
-
-            if (storedUserData && storedUserData.email === email) {
-                storedUserData.password = newPassword;
-                localStorage.setItem('userData', JSON.stringify(storedUserData));
-                alert('Password reset successful! Please login.');
-                showLogin();
-            } else {
-                alert('Email not registered!');
-            }
-        }
-
-        window.onload = function() {
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                window.location.href = "index.html";
-            }
-        }
-    </script>
 </body>
 </html>
