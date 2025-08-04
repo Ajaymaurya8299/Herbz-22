@@ -47,13 +47,13 @@
   <script>
     function logoutUser() {
       localStorage.removeItem('isLoggedIn'); 
-      window.location.href = "login.html"; // अपने login page का नाम डालें
+      window.location.href = "index.html"; // logout के बाद index.html पर भेजो
     }
 
-    // अगर user login नहीं है, तो वापस login page पर भेजें:
+    // अगर user login नहीं है, तो भी सीधे index.html पर भेजो:
     window.onload = function() {
       if (localStorage.getItem('isLoggedIn') !== 'true') {
-        window.location.href = "login.html";
+        window.location.href = "index.html";
       }
     }
   </script>
