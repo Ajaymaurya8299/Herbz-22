@@ -1,623 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Herbz</title>
-<style>
-        /* Global Styling */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            overflow-x: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
 
-        /* Side Menu Styling */
-       body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-}
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        overflow-x: hidden;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-.side-menu {
-  width: 250px;
-  background-color: #ffffff;
-  height: 100vh;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  padding: 20px 10px;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
+      .side-menu {
+        width: 250px;
+        height: 100%;
+        background-color: #0078d7;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: -260px;
+        transition: left 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        padding-top: 60px;
+        z-index: 100;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      }
 
-.side-menu a {
-  display: block;
-  padding: 12px 20px;
-  margin: 10px 0;
-  text-decoration: none;
-  color: #333;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-}
+      .side-menu a {
+        background: white;
+        color: #0078d7;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+      }
 
-.side-menu a:hover {
-  background-color: #007bff;
-  color: #ffffff;
-}
+      header {
+        background-color: #0078d7;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
 
-.side-menu a:active {
-  background-color: #0056b3;
-}
+      .main-content {
+        padding: 20px;
+        text-align: center;
+        flex-grow: 1;
+        overflow-y: auto;
+      }
 
-.side-menu .menu-header {
-  font-size: 20px;
-  font-weight: bold;
-  color: #09bff;
-  text-align: center;
-  margin-bottom: 20px;
-}
+      .image-gallery {
+        display: flex;
+        overflow-x: scroll;
+        gap: 15px;
+        padding: 10px 0;
+        scroll-snap-type: x mandatory;
+        margin-top: 20px;
+      }
 
-        /* Header Styling */
-        header {
-            background-color: #0078D7;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 10;
-            position: relative;
-            padding-left: 20px;/* Added padding to create space for the side menu */
-}
+      .image-gallery img {
+        width: 190px;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
 
-        }
+      .youtube-container iframe {
+        width: 100%;
+        height: 200px;
+        border: none;
+        border-radius: 8px;
+      }
 
-        header h1 {
-            margin: 0;
-            font-size: 1.6em;
-            flex-grow: 2;
-            padding-left: 20px; /* Added padding to create space between title and menu icon */
-}
+      .navbar {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        position: fixed;
+        bottom: 0;
+        background: white;
+        border-top: 1px solid #ddd;
+        padding: 10px 0;
+      }
 
-        .menu-icon {
-            font-size: 1.7em;
-            cursor: pointer;
-        }
+      .navbar a {
+        text-decoration: none;
+        color: #0078d7;
+        font-weight: bold;
+        text-align: center;
+      }
 
-        .search-icon {
-            font-size: 1.9em;
-            cursor: pointer;
-        }
-
-        /* Overlay for when menu is open */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 5;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        .side-menu.active {
-            left: 0; /* Show menu from left */
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: 20px;
-            text-align: center;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        /* Image Gallery */
-        .image-gallery {
-            display: flex;
-            overflow-x: scroll;
-            gap: 15px;
-            padding: 20px 0;
-            scroll-snap-type: x mandatory;
-            margin-top: 20px;
-        }
-
-        .image-gallery img {
-            width: 290px;
-            height: 180px;
-            object-fit: cover;
-            scroll-snap-align: start;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .image-gallery img:hover {
-            transform: scale(1.1);
-        }
-
-        /* YouTube Video Embed */
-        .youtube-container {
-            width: 100%;
-            max-width: 800px;
-            margin-top: 40px;
-            padding: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        .youtube-container iframe {
-            width: 100%;
-            height: 200px;
-            border: none;
-        }
-
-        /* Social Media Icons */
-        .social-icons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .social-icons a {
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #0078D7;
-            padding: 8.5px;
-            transition: all 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            color: #005BB5;
-        }
-
-        /* Floating Action Button (FAB) */
-        .fab {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            background-color: #0078D7;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            font-size: 2em;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .fab:hover {
-            background-color: #005BB5;
-        }
-
-        /* Bottom Navigation Bar */
-        .navbar {
-            width: 100%;
-            display: flex;
-            justify-content: space-evenly;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background-color: #ffffff;
-            border-top: 2px solid #e1e1e1;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar a {
-            text-decoration: none;
-            color: #0078D7;
-            padding: 8px 15px;
-            font-size: 14px;
-            font-weight: 500;
-            text-align: center;
-            border-radius: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .navbar a img {
-            width: 30px;
-            height: 30px;
-            margin-bottom: 5px;
-        }
-
-        .navbar a:hover {
-            background-color: #e1e1e1;
-            transform: scale(1.1);
-        }
-
-        /* Media Queries for Mobile Devices */
-        @media (max-width: 768px) {
-            .side-menu {
-                width: 200px;
-            }
-
-            header h1 {
-                font-size: 1.2em;
-            }
-
-            .image-gallery img {
-                width: 250px;
-                height: 150px;
-            }
-
-            .fab {
-                bottom: 80px;
-                right: 15px;
-            }
-        }
-</style><!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herbz</title>
-<style>
-        /* Global Styling */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            overflow-x: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Side Menu Styling */
-        .side-menu {
-            width: 250px;
-            height: 100%;
-            background-color: #0078D7;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: -260px; /* Initially hidden */
-            transition: left 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            padding-top: 60px;
-            z-index: 100;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .side-menu button {
-            background-color: white;
-            color: #0078D7;
-            padding: 25px 20px;
-            margin: 25px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .side-menu button:hover {
-            background-color: #005BB5;
-            color: white;
-        }
-
-        /* Header Styling */
-        header {
-            background-color: #0078D7;
-            color: white;
-            padding: 5px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 10;
-            position: relative;
-            padding-left: 20px;/* Added padding to create space for the side menu */
-}
-
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 1.0em;
-            flex-grow: 1;
-            padding-left: 10px; /* Added padding to create space between title and menu icon */
-}
-
-        .menu-icon {
-            font-size: 1.7em;
-            cursor: pointer;
-        }
-
-        .search-icon {
-            font-size: 1.9em;
-            cursor: pointer;
-        }
-
-        /* Overlay for when menu is open */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 5;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        .side-menu.active {
-            left: 0; /* Show menu from left */
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: 20px;
-            text-align: center;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        /* Image Gallery */
-        .image-gallery {
-            display: flex;
-            overflow-x: scroll;
-            gap: 15px;
-            padding: 2px 0;
-            scroll-snap-type: x mandatory;
-            margin-top: 20px;
-        }
-
-        .image-gallery img {
-            width: 190px;
-            height: 180px;
-            object-fit: cover;
-            scroll-snap-align: start;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .image-gallery img:hover {
-            transform: scale(1.1);
-        }
-
-        /* YouTube Video Embed */
-        .youtube-container {
-            width: 100%;
-            max-width: 800px;
-            margin-top: 40px;
-            padding: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        .youtube-container iframe {
-            width: 100%;
-            height: 200px;
-            border: none;
-        }
-
-        /* Social Media Icons */
-        .social-icons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .social-icons a {
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #0078D7;
-            padding: 8.5px;
-            transition: all 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            color: #005BB5;
-        }
-
-        /* Floating Action Button (FAB) */
-        .fab {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            background-color: #0078D7;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            font-size: 2em;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .fab:hover {
-            background-color: #005BB5;
-        }
-
-        /* Bottom Navigation Bar */
-        .navbar {
-            width: 100%;
-            display: flex;
-            justify-content: space-evenly;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background-color: #ffffff;
-            border-top: 2px solid #e1e1e1;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar a {
-            text-decoration: none;
-            color: #0078D7;
-            padding: 8px 15px;
-            font-size: 14px;
-            font-weight: 500;
-            text-align: center;
-            border-radius: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .navbar a img {
-            width: 30px;
-            height: 30px;
-            margin-bottom: 5px;
-        }
-
-        .navbar a:hover {
-            background-color: #e1e1e1;
-            transform: scale(1.1);
-        }
-
-        /* Media Queries for Mobile Devices */
-        @media (max-width: 768px) {
-            .side-menu {
-                width: 200px;
-            }
-
-            header h1 {
-                font-size: 1.2em;
-            }
-
-            .image-gallery img {
-                width: 250px;
-                height: 150px;
-            }
-
-            .fab {
-                bottom: 80px;
-                right: 15px;
-            }
-        }
-</style>
+      .fab {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        background-color: #0078d7;
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 50%;
+        font-size: 2em;
+        cursor: pointer;
+      }
+    </style>
   </head>
+
   <body>
+    <!-- Popunder Ad -->
+    <script
+      type="text/javascript"
+      src="//pl27972316.effectivegatecpm.com/28/5b/01/285b01806ed91b54b978f926013f5ce7.js"
+    ></script>
+
     <!-- Side Menu -->
- <div class="side-menu" id="sideMenu">
-    <div class="menu-header">App Menu</div>
-    <a href="profile1.html">👨🏻‍💼 Profile</a>
-   <a href="mcq.html">🎮 Winner MCQ</a>
-    <a href="about1.html">ℹ️ About</a>
-    <a href="shere1.html">🔁   Share</a>
-     <a href="shere1.html"> </a>
-    <a href="logout1.html">╰┈➤ Log out</a>
-  </div>
+    <div class="side-menu" id="sideMenu">
+      <div class="menu-header">App Menu</div>
+      <a href="profile1.html">👨🏻‍💼 Profile</a>
+      <a href="mcq.html">🎮 Winner MCQ</a>
+      <a href="about1.html">ℹ️ About</a>
+      <a href="shere1.html">🔁 Share</a>
+      <a href="logout1.html">╰┈➤ Log out</a>
+    </div>
 
-</body>
-</html>
-    <!-- Overlay -->
-    <div class="overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-
-    <!-- Header with Menu Icon -->
+    <!-- Header -->
     <header>
-	  <span class="menu-icon" onclick="toggleMenu()">☰</span>
-	  <h1>Herbz 222</h1>
-   <button onclick="window.location.href='search1.html'">🔍</button>
-       </header>
+      <span class="menu-icon" onclick="toggleMenu()">☰</span>
+      <h1>Herbz 222</h1>
+      <button onclick="window.location.href='search1.html'">🔍</button>
+    </header>
+
+    <!-- Banner Ad -->
+    <div align="center" style="margin: 10px 0">
+      <script type="text/javascript">
+        atOptions = {
+          key: "2e0f37b3aab8f3ef3cf2d74d387bd7da",
+          format: "iframe",
+          height: 60,
+          width: 468,
+          params: {},
+        };
+      </script>
+      <script
+        type="text/javascript"
+        src="//www.highperformanceformat.com/2e0f37b3aab8f3ef3cf2d74d387bd7da/invoke.js"
+      ></script>
+    </div>
 
     <!-- Main Content -->
     <div class="main-content">
-	  <h1>Welcome</h1>
-	  <p>कलम की ताकत तलवार से बड़ी होती है, ज्ञान की रोशनी हर अंधेरे को मिटाती है।</p>
+      <h1>Welcome</h1>
+      <p>
+        कलम की ताकत तलवार से बड़ी होती है, ज्ञान की रोशनी हर अंधेरे को मिटाती है।
+      </p>
 
-	  <!-- First Image in the Content -->
-	  <img src="myphoto1.jpg" alt="Educational Image 1" style="width: 100%; height: auto; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <img
+        src="myphoto1.jpg"
+        alt="Educational Image 1"
+        style="width: 100%; border-radius: 8px"
+      />
 
-	  <h10>"हर ख्वाब को अपने सांसों में रखो, हर मंजिल को अपनी बाहों में रखो।"</h10>
-	  <!-- Horizontal Image Gallery -->
-	  <div class="image-gallery">
-		<img src="0.jpg" alt="Educational Image 1">
-		<img src="1.jpg" alt="Educational Image 2">
-		<img src="6.jpg" alt="Educational Image 3">
-		<img src="4.jpg" alt="Educational Image 4">
-		<img src="3.jpg" alt="Educational Image 5">
-		<img src="5.jpg" alt="Educational Image 6">
-		<img src="7.jpg" alt="Educational Image 8">
-	  </div>
+      <h3>"हर ख्वाब को अपने सांसों में रखो, हर मंजिल को अपनी बाहों में रखो।"</h3>
 
-	  <!-- YouTube Video Embed -->
-	  <div class="youtube-container">
-		<iframe src="https://www.Youtube.com/embed/VRHDA-F7OV4" title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-	  </div>
+      <div class="image-gallery">
+        <img src="0.jpg" alt="Educational Image 1" />
+        <img src="1.jpg" alt="Educational Image 2" />
+        <img src="6.jpg" alt="Educational Image 3" />
+        <img src="4.jpg" alt="Educational Image 4" />
+        <img src="3.jpg" alt="Educational Image 5" />
+        <img src="5.jpg" alt="Educational Image 6" />
+      </div>
 
-	  <!-- Social Media Links -->
-	  <div class="social-icons">
-		<a href="https://www.youtube.com/@herbz222" target="_blank">YouTube</a>
-		<a href="https://t.me/+IUBXFpSZS284ODk9" target="_blank">Telegram</a>
-		<a href="https://whatsapp.com/channel/0029Vaw71dTKLaHovGTgUA13" target="_blank">WhatsApp</a>
-	  </div>
+      <!-- Native Banner Ad -->
+      <div align="center" style="margin: 20px 0">
+        <script
+          async="async"
+          data-cfasync="false"
+          src="//pl27972339.effectivegatecpm.com/25fd2b39a0a9c342136aa0a200b1c62c/invoke.js"
+        ></script>
+        <div id="container-25fd2b39a0a9c342136aa0a200b1c62c"></div>
+      </div>
+
+      <!-- YouTube Embed -->
+      <div class="youtube-container">
+        <iframe
+          src="https://www.youtube.com/embed/VRHDA-F7OV4"
+          title="YouTube video player"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <!-- Social Media Links -->
+      <div class="social-icons">
+        <a href="https://www.youtube.com/@herbz222" target="_blank">YouTube</a>
+        <a href="https://t.me/+IUBXFpSZS284ODk9" target="_blank">Telegram</a>
+        <a
+          href="https://whatsapp.com/channel/0029Vaw71dTKLaHovGTgUA13"
+          target="_blank"
+          >WhatsApp</a
+        >
+      </div>
     </div>
 
-    <!-- Floating Action Button -->
+    <!-- Smartlink -->
+    <script
+      type="text/javascript"
+      src="//pl27972341.effectivegatecpm.com/93/ab/55/93ab55297a19598d7ebb593277b1756c.js"
+    ></script>
+
+    <!-- Floating Button -->
     <button class="fab" onclick="window.location.href='form1.html'">+</button>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Navbar -->
     <nav class="navbar">
-	  <a href="home.html">
-		<img src="home1.png" alt="Home">
-		<span>Home</span>
-	  </a>
-	  <a href="not1.html">
-		<img src="notes1.png" alt="Notes">
-		<span>Notes</span>
-	  </a>
-	  <a href="paper11.html">
-		<img src="paper1.png" alt="Papers">
-		<span>Papers</span>
-	  </a>
-	  <a href="video1.html">
-		<img src="video1.png" alt="Video">
-		<span>Video</span>
-	  </a>
-	  
+      <a href="home.html">🏠 Home</a>
+      <a href="not1.html">📘 Notes</a>
+      <a href="paper11.html">📄 Papers</a>
+      <a href="video1.html">🎥 Video</a>
     </nav>
 
-    <!-- JavaScript -->
-<script>
-        function toggleMenu() {
-            const menu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-            menu.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-        function buttonClicked() {
-    window.location.href ="form.html"; // Redirect to a URL
-}
-</script>
+    <!-- JS -->
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("sideMenu");
+        menu.classList.toggle("active");
+      }
+    </script>
   </body>
 </html>
-  </head>
-
-
-
-
