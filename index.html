@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Firebase Auth with Email/Mobile Toggle</title>
+<title>Firebase Auth with Email/Mobile Toggle UI</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
   body {
@@ -183,6 +183,7 @@
     <div class="links">
       <a href="#" id="forgotPassLink">Forgot Password?</a>
       <a href="#" id="signInWithMobileLink">Sign in with mobile</a>
+      <a href="#" id="signInWithEmailLink" style="display:none; color:#45dbb1; cursor:pointer;">Sign in with email</a>
     </div>
     <button id="signInSubmit" class="submitBtn">Sign In</button>
 
@@ -240,7 +241,7 @@
     onAuthStateChanged,
   } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
 
-  const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyCoyU0GTIbmoybj0xPYs-vJ0NWMgKYA9a0",
   authDomain: "enjoy-2ffdf.firebaseapp.com",
   databaseURL: "https://enjoy-2ffdf-default-rtdb.firebaseio.com",
@@ -265,7 +266,7 @@
   const tabSignIn = document.getElementById('tabSignIn');
   const tabSignUp = document.getElementById('tabSignUp');
 
-  btnSignIn.addEventListener('click',()=>{
+  btnSignIn.addEventListener('click', () => {
     btnSignIn.classList.add('active');
     btnSignUp.classList.remove('active');
     tabSignIn.style.display = 'block';
@@ -274,7 +275,7 @@
     clearError('signUpError');
   });
 
-  btnSignUp.addEventListener('click',()=>{
+  btnSignUp.addEventListener('click', () => {
     btnSignUp.classList.add('active');
     btnSignIn.classList.remove('active');
     tabSignUp.style.display = 'block';
@@ -297,99 +298,113 @@
       }
     }
   }
-  togglePass('signInPassword','toggleSignInPass');
+  togglePass('signInPassword', 'toggleSignInPass');
 
-  // Toggle signIn email/mobile input type + placeholder
+  // Toggle signIn email/mobile input type + placeholder + links show/hide
   const signInEmailInput = document.getElementById('signInEmail');
   const signInWithMobileLink = document.getElementById('signInWithMobileLink');
+  const signInWithEmailLink = document.getElementById('signInWithEmailLink');
   const forgotPassLink = document.getElementById('forgotPassLink');
 
-  signInWithMobileLink.addEventListener('click',(e)=>{
+  signInWithMobileLink.addEventListener('click', (e) => {
     e.preventDefault();
     signInEmailInput.type = 'tel';
     signInEmailInput.placeholder = 'Enter your mobile number';
+    signInWithMobileLink.style.display = 'none';
+    signInWithEmailLink.style.display = 'inline';
   });
 
-  forgotPassLink.addEventListener('click',(e)=>{
+  signInWithEmailLink.addEventListener('click', (e) => {
     e.preventDefault();
     signInEmailInput.type = 'email';
     signInEmailInput.placeholder = 'Email';
-    const email = prompt('Enter your email for password reset:');
-    if(!email) return;
-    sendPasswordResetEmail(auth,email)
-      .then(()=>alert('Password reset email sent!'))
-      .catch(err=>alert("Failed: "+err.message));
+    signInWithMobileLink.style.display = 'inline';
+    signInWithEmailLink.style.display = 'none';
+  });
+
+  forgotPassLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    const emailAddress = prompt('Enter your email for password reset:');
+    if (!emailAddress) return;
+    sendPasswordResetEmail(auth, emailAddress)
+      .then(() => alert('Password reset email sent!'))
+      .catch(err => alert('Failed to send reset email: ' + err.message));
   });
 
   // Sign In logic
-  document.getElementById('signInSubmit').addEventListener('click',async()=>{
+  document.getElementById('signInSubmit').addEventListener('click', async () => {
     clearError('signInError');
-    const email = signInEmailInput.value.trim();
+    const emailOrMobile = signInEmailInput.value.trim();
     const password = document.getElementById('signInPassword').value;
-    if(!email){ alert('Please enter email or mobile'); return;}
-    if(!password){ alert('Please enter password'); return;}
-    try{
-      await signInWithEmailAndPassword(auth, email, password);
+    if (!emailOrMobile) {
+      alert('Please enter your email or mobile.');
+      return;
+    }
+    if (!password) {
+      alert('Please enter your password.');
+      return;
+    }
+    try {
+      await signInWithEmailAndPassword(auth, emailOrMobile, password);
       window.location.href = 'home.html';
-    }catch(e){
-      alert('Sign in failed: '+e.message);
+    } catch (error) {
+      alert('Sign in failed: ' + (error.message || ''));
     }
   });
 
   // Sign Up logic
   document.getElementById('signUpSubmit').addEventListener('click', async () => {
     clearError('signUpError');
-    const prefix = document.getElementById('signUpEmailPrefix').value.trim();
-    const email = prefix + '@gmail.com';
+    const emailPrefix = document.getElementById('signUpEmailPrefix').value.trim();
+    const email = emailPrefix + '@gmail.com';
     const mobile = document.getElementById('signUpMobile').value.trim();
     const password = document.getElementById('signUpPassword').value;
 
-    if(!/^[a-zA-Z0-9._]+$/.test(prefix)){
-      showError('signUpError','Invalid email prefix');
+    if (!/^[a-zA-Z0-9._]+$/.test(emailPrefix)) {
+      showError('signUpError', 'Invalid email prefix');
       return;
     }
-    if(!/^d{10}$/.test(mobile)){
-      showError('signUpError','Mobile number must be 10 digits');
+    if (!/^d{10}$/.test(mobile)) {
+      showError('signUpError', 'Mobile number must be 10 digits');
       return;
     }
-    if(!password){
-      showError('signUpError','Please enter password');
+    if (!password) {
+      showError('signUpError', 'Please enter a password');
       return;
     }
-    try{
-      await createUserWithEmailAndPassword(auth,email,password);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
       window.location.href = 'home.html';
-    }catch(e){
-      showError('signUpError',e.message);
+    } catch (error) {
+      showError('signUpError', error.message || 'Sign up failed');
     }
   });
 
-  // Google sign-in
+  // Google Sign In
   document.getElementById('googleSignIn').addEventListener('click', async () => {
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
       window.location.href = 'home.html';
-    } catch (e) {
-      alert("Google sign-in failed: "+e.message);
+    } catch (error) {
+      alert('Google sign-in failed: ' + error.message);
     }
   });
 
-  // Facebook sign-in
+  // Facebook Sign In
   document.getElementById('facebookSignIn').addEventListener('click', async () => {
     try {
       await signInWithPopup(auth, new FacebookAuthProvider());
       window.location.href = 'home.html';
-    } catch (e) {
-      alert("Facebook sign-in failed: "+e.message);
+    } catch (error) {
+      alert('Facebook sign-in failed: ' + error.message);
     }
   });
 
-  onAuthStateChanged(auth, user => {
-    if(user) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
       window.location.href = 'home.html';
     }
   });
 </script>
-
 </body>
 </html>
