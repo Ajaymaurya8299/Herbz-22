@@ -1,201 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Card</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .card {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            padding: 30px;
-            text-align: center;
-        }
-        .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin: 0 auto 20px;
-            background-size: cover;
-            background-position: center;
-            border: 3px solid #ff7e5f;
-            cursor: pointer;
-        }
-        .profile-info {
-            margin-top: 20px;
-            text-align: left;
-        }
-        .profile-info .row {
-            margin: 15px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .label {
-            color: #ff7e5f;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .value {
-            color: #333;
-            font-weight: normal;
-            font-size: 16px;
-            padding-left: 10px;
-        }
-        .value.email {
-            color: #4caf50; /* Email color */
-        }
-        .value.mobile {
-            color: #2196f3; /* Mobile color */
-        }
-        .value.dob {
-            color: #9c27b0; /* Date of Birth color */
-        }
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .button {
-            background-color: #ff7e5f;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-        .button:hover {
-            background-color: #feb47b;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile Card</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#ff7e5f,#feb47b);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+  }
+  .card{
+    width:380px;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    padding:25px;
+    text-align:center;
+  }
+  .profile-img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    margin:0 auto 20px;
+    border:3px solid #ff7e5f;
+    background-color:#eee;
+    background-size:cover;
+    background-position:center;
+    cursor:pointer;
+  }
+  .field{margin:12px 0;text-align:left}
+  label{font-weight:600;color:#ff7e5f;font-size:15px}
+  input{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+  }
+  .btn{
+    background:#ff7e5f;
+    color:#fff;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:15px;
+    transition:background .3s;
+  }
+  .btn:hover{background:#feb47b}
+  .view-field{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+    font-size:16px;
+  }
+  .label{color:#ff7e5f;font-weight:600}
+  .value{color:#333}
+</style>
 </head>
 <body>
 
-    <div class="card">
-        <!-- Profile Image -->
-        <div 
-            class="profile-img" 
-            id="profile-img" 
-            style="background-image: url('default-profile.png');" 
-            onclick="document.getElementById('file-input').click()">
-        </div>
+<div class="card">
+  <div class="profile-img" id="profileImg" style="background-image:url('https://via.placeholder.com/150?text=Photo');" onclick="openFile()"></div>
+  <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="changePhoto(event)">
 
-        <!-- Hidden File Input -->
-        <input 
-            type="file" 
-            id="file-input" 
-            style="display: none;" 
-            accept="image/*" 
-            onchange="changeProfileImage(event)">
-
-        <!-- Profile Information -->
-        <div class="profile-info">
-            <div class="row">
-                <span class="label">Username:</span>
-                <span class="value" id="username">Ajay Maurya</span>
-            </div>
-            <div class="row">
-                <span class="label">Email:</span>
-                <span class="value email" id="email"></span>
-            </div>
-            <div class="row">
-                <span class="label">Mobile:</span>
-                <span class="value mobile" id="mobile">9876543210</span>
-            </div>
-            <div class="row">
-                <span class="label">Date of Birth:</span>
-                <span class="value dob" id="dob">01/01/2000</span>
-            </div>
-        </div>
-
-        <!-- Edit Button -->
-        <button class="button" onclick="editProfile()">Edit Profile</button>
-
-        <!-- Save Button (hidden initially) -->
-        <button class="button" id="save-btn" style="display: none;" onclick="saveProfile()">Save</button>
+  <!-- Form Section -->
+  <div id="formSection">
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Enter your name">
     </div>
+    <div class="field">
+      <label>Mobile Number</label>
+      <input type="tel" id="mobile" placeholder="Enter mobile number">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter email">
+    </div>
+    <div class="field">
+      <label>Date of Birth</label>
+      <input type="date" id="dob">
+    </div>
+    <button class="btn" id="submitBtn" onclick="saveProfile()">Submit</button>
+  </div>
 
-    <script>
-        // Fetch data from local storage when the page loads
-        window.onload = function() {
-            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-            if (loggedInUser) {
-                document.getElementById('email').innerText = loggedInUser.email;
-                document.getElementById('username').innerText = loggedInUser.username;
-                document.getElementById('mobile').innerText = loggedInUser.mobile;
-                document.getElementById('dob').innerText = loggedInUser.dob;
-            }
-        };
+  <!-- Display Section -->
+  <div id="displaySection" style="display:none;">
+    <div class="view-field"><span class="label">Username:</span><span class="value" id="dName"></span></div>
+    <div class="view-field"><span class="label">Mobile:</span><span class="value" id="dMobile"></span></div>
+    <div class="view-field"><span class="label">Email:</span><span class="value" id="dEmail"></span></div>
+    <div class="view-field"><span class="label">DOB:</span><span class="value" id="dDob"></span></div>
+    <button class="btn" id="editBtn" onclick="editProfile()">Edit Profile</button>
+  </div>
+</div>
 
-        // Change Profile Image
-        function changeProfileImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profile-img').style.backgroundImage = `url('${e.target.result}')`;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const profileImg = document.getElementById('profileImg');
+  let photoData = '';
 
-        // Edit Profile
-        function editProfile() {
-            const username = document.getElementById('username').innerText;
-            const dob = document.getElementById('dob').innerText;
-            const email = document.getElementById('email').innerText;
+  function openFile() {
+    fileInput.click();
+  }
 
-            document.getElementById('username').innerHTML = `<input type="text" id="edit-username" class="input-field" value="${username}">`;
-            document.getElementById('dob').innerHTML = `<input type="date" id="edit-dob" class="input-field" value="${dob.split('/').reverse().join('-')}">`;
-            document.getElementById('email').innerHTML = `<input type="email" id="edit-email" class="input-field" value="${email}">`;
+  function changePhoto(e) {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      photoData = ev.target.result;
+      profileImg.style.backgroundImage = `url('${photoData}')`;
+    };
+    reader.readAsDataURL(file);
+  }
 
-            document.querySelector('.button').style.display = 'none';
-            document.getElementById('save-btn').style.display = 'inline-block';
-        }
+  window.onload = function() {
+    const saved = JSON.parse(localStorage.getItem('userProfile'));
+    if(saved) {
+      photoData = saved.photo;
+      profileImg.style.backgroundImage = `url('${photoData}')`;
+      showProfile(saved);
+    }
+  };
 
-        // Save Profile
-        function saveProfile() {
-            const updatedUsername = document.getElementById('edit-username').value;
-            const updatedDob = document.getElementById('edit-dob').value;
-            const updatedEmail = document.getElementById('edit-email').value;
+  function saveProfile() {
+    const name = document.getElementById('username').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const dob = document.getElementById('dob').value;
 
-            document.getElementById('username').innerText = updatedUsername;
-            document.getElementById('dob').innerText = updatedDob.split('-').reverse().join('/');
-            document.getElementById('email').innerText = updatedEmail;
+    if(!name || !mobile || !email || !dob) {
+      alert('Please fill all fields!');
+      return;
+    }
 
-            // Save updated data to local storage
-            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-            loggedInUser.username = updatedUsername;
-            loggedInUser.dob = updatedDob;
-            loggedInUser.email = updatedEmail;
+    const data = {
+      name, mobile, email, dob,
+      photo: photoData || 'https://via.placeholder.com/150?text=Photo'
+    };
 
-            localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+    localStorage.setItem('userProfile', JSON.stringify(data));
+    showProfile(data);
+  }
 
-            document.querySelector('.button').style.display = 'inline-block';
-            document.getElementById('save-btn').style.display = 'none';
-        }
-    </script>
+  function showProfile(data) {
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('displaySection').style.display = 'block';
+
+    document.getElementById('dName').textContent = data.name;
+    document.getElementById('dMobile').textContent = data.mobile;
+    document.getElementById('dEmail').textContent = data.email;
+    document.getElementById('dDob').textContent = data.dob;
+  }
+
+  function editProfile() {
+    const saved = JSON.parse(localStorage.getItem('userProfile'));
+    if(!saved) return;
+
+    document.getElementById('formSection').style.display = 'block';
+    document.getElementById('displaySection').style.display = 'none';
+
+    document.getElementById('username').value = saved.name;
+    document.getElementById('mobile').value = saved.mobile;
+    document.getElementById('email').value = saved.email;
+    document.getElementById('dob').value = saved.dob;
+  }
+</script>
 
 </body>
 </html>
