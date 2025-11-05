@@ -1,167 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Sign Up</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-        }
-        .container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        .input-field {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        .button {
-            background-color: #0072ff;
-            color: white;
-            padding: 15px;
-            width: 100%;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .button:hover {
-            background-color: #0056d6;
-        }
-        .form-link {
-            margin-top: 10px;
-            color: #0072ff;
-            cursor: pointer;
-        }
-        .form-header {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Firebase Auth with Email/Mobile Toggle</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #21293c;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .container {
+    background-color: #2a3550;
+    width: 360px;
+    border-radius: 25px;
+    padding: 32px 32px 60px;
+    box-shadow: 0 15px 35px rgb(0 0 0 / 0.8);
+    position: relative;
+  }
+  .tabs {
+    display: flex;
+    border-radius: 16px;
+    background-color: #1c2643;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .tabBtn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #8692b0;
+    font-weight: 600;
+    font-size: 22px;
+    padding: 12px 0;
+    cursor:pointer;
+    transition: all 0.3s ease;
+  }
+  .tabBtn.active {
+    background-color: #45dbb1;
+    color: #0f1620;
+  }
+  h1 {
+    font-weight: 700;
+    font-size: 32px;
+    margin: 0 0 24px;
+  }
+  input[type=text], input[type=email], input[type=password], input[type=tel] {
+    width: 100%;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    border: none;
+    background-color: #3b4661;
+    color: #d2d6dd;
+    font-size: 16px;
+    outline: none;
+  }
+  input::placeholder {
+    color: #8e9db8;
+  }
+  .password-wrapper {
+    position: relative;
+  }
+  .togglePass {
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    cursor: pointer;
+    color: #45dbb1;
+    user-select: none;
+  }
+  .links {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .links a {
+    color: #45dbb1;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
+  .submitBtn {
+    width: 100%;
+    padding: 18px;
+    background: #45dbb1;
+    border: none;
+    border-radius: 16px;
+    color: #0f1620;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .submitBtn:disabled {
+    background: #85e9cc;
+    cursor: not-allowed;
+  }
+  .divider {
+    color: #8493b0;
+    font-weight: 600;
+    text-align: center;
+    margin: 32px 0 24px;
+    font-size: 14px;
+  }
+  .socialButtons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  .socialBtn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 16px;
+    padding: 10px 20px;
+    font-size: 15px;
+    box-shadow: 0 5px 10px rgb(0 0 0 / 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+  .socialBtn:hover {
+    box-shadow: 0 7px 15px rgb(0 0 0 / 0.3);
+  }
+  .socialGoogle {
+    background-color: #ffffff;
+    color: #444;
+  }
+  .socialFacebook {
+    background-color: #1877f2;
+    color: #ffffff;
+  }
+  .socialBtn img {
+    width: 20px;
+    height: 20px;
+  }
+  .footerIcon {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    width: 45px;
+    filter: drop-shadow(0 0 10px #45dbb1aa);
+  }
+  .errorMsg {
+    color: #ff6666;
+    font-weight: 600;
+    text-align: center;
+    height: 20px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Login Form -->
-        <div id="login-form">
-            <div class="form-header">Login</div>
-            <input type="text" id="login-username" class="input-field" placeholder="Username or Email" required>
-            <input type="password" id="login-password" class="input-field" placeholder="Password" required>
-            <button class="button" onclick="loginUser()">Login</button>
-            <div class="form-link" onclick="showSignUp()">New here? Sign up</div>
-            <div class="form-link" onclick="showForgetPassword()">Forgot Password?</div>
-        </div>
+<div class="container">
+  <div class="tabs">
+    <button id="btnSignIn" class="tabBtn active">Sign In</button>
+    <button id="btnSignUp" class="tabBtn">Sign Up</button>
+  </div>
 
-        <!-- Sign Up Form -->
-        <div id="sign-up-form" class="hidden">
-            <div class="form-header">Sign Up</div>
-            <input type="text" id="sign-up-username" class="input-field" placeholder="Username" required>
-            <input type="email" id="sign-up-email" class="input-field" placeholder="Email" required>
-            <input type="password" id="sign-up-password" class="input-field" placeholder="Password" required>
-            <button class="button" onclick="signUpUser()">Sign Up</button>
-            <div class="form-link" onclick="showLogin()">Already have an account? Login</div>
-        </div>
-
-        <!-- Forget Password Form -->
-        <div id="forget-password-form" class="hidden">
-            <div class="form-header">Reset Password</div>
-            <input type="email" id="reset-email" class="input-field" placeholder="Enter your registered email" required>
-            <input type="password" id="new-password" class="input-field" placeholder="New Password" required>
-            <button class="button" onclick="resetPassword()">Reset Password</button>
-            <div class="form-link" onclick="showLogin()">Back to Login</div>
-        </div>
+  <!-- Sign In -->
+  <div id="tabSignIn">
+    <h1>Sign in</h1>
+    <input type="email" id="signInEmail" placeholder="Email" autocomplete="username" />
+    <div class="password-wrapper">
+      <input type="password" id="signInPassword" placeholder="Enter your password" autocomplete="current-password" />
+      <span class="togglePass" id="toggleSignInPass">👁️</span>
     </div>
+    <div class="links">
+      <a href="#" id="forgotPassLink">Forgot Password?</a>
+      <a href="#" id="signInWithMobileLink">Sign in with mobile</a>
+    </div>
+    <button id="signInSubmit" class="submitBtn">Sign In</button>
 
-    <script>
-        function showLogin() {
-            document.getElementById('login-form').classList.remove('hidden');
-            document.getElementById('sign-up-form').classList.add('hidden');
-            document.getElementById('forget-password-form').classList.add('hidden');
-        }
+    <div class="divider">Or login with</div>
 
-        function showSignUp() {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('sign-up-form').classList.remove('hidden');
-            document.getElementById('forget-password-form').classList.add('hidden');
-        }
+    <div class="socialButtons">
+      <div id="facebookSignIn" class="socialBtn socialFacebook">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" />
+        Facebook
+      </div>
+      <div id="googleSignIn" class="socialBtn socialGoogle">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" />
+        Google
+      </div>
+    </div>
+    <div class="errorMsg" id="signInError"></div>
+  </div>
 
-        function showForgetPassword() {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('sign-up-form').classList.add('hidden');
-            document.getElementById('forget-password-form').classList.remove('hidden');
-        }
+  <!-- Sign Up -->
+  <div id="tabSignUp" style="display:none;">
+    <h1>Sign Up</h1>
+    <div class="email-wrapper">
+      <input type="text" id="signUpEmailPrefix" placeholder="Email prefix" autocomplete="username" />
+      <div class="email-domain">@gmail.com</div>
+    </div>
+    <input type="text" id="signUpMobile" placeholder="Mobile Number (10 digits)" maxlength="10" inputmode="numeric" />
+    <input type="password" id="signUpPassword" placeholder="Password" autocomplete="new-password" />
+    <button id="signUpSubmit" class="submitBtn">Sign Up</button>
+    <div class="errorMsg" id="signUpError"></div>
+    <div class="socialButtons" style="margin-top:12px;">
+      <div id="facebookSignUp" class="socialBtn socialFacebook">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" />
+        Facebook
+      </div>
+      <div id="googleSignUp" class="socialBtn socialGoogle">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" />
+        Google
+      </div>
+    </div>
+  </div>
+</div>
 
-        function signUpUser() {
-            const userData = {
-                username: document.getElementById('sign-up-username').value,
-                email: document.getElementById('sign-up-email').value,
-                password: document.getElementById('sign-up-password').value
-            };
-            localStorage.setItem('userData', JSON.stringify(userData));
-            alert('Sign up successful! Please login.');
-            showLogin();
-        }
+<img src="https://cdn-icons-png.flaticon.com/512/463/463704.png" alt="Fingerprint Icon" class="footerIcon" />
 
-        function loginUser() {
-            const storedUserData = JSON.parse(localStorage.getItem('userData'));
-            const usernameOrEmail = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signInWithPopup,
+    GoogleAuthProvider,
+    FacebookAuthProvider,
+    onAuthStateChanged,
+  } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
 
-            if (storedUserData && 
-                (storedUserData.username === usernameOrEmail || storedUserData.email === usernameOrEmail) 
-                && storedUserData.password === password) {
-                
-                localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = "home.html";
-            } else {
-                alert('Invalid credentials');
-            }
-        }
+  const firebaseConfig = {
+  apiKey: "AIzaSyCoyU0GTIbmoybj0xPYs-vJ0NWMgKYA9a0",
+  authDomain: "enjoy-2ffdf.firebaseapp.com",
+  databaseURL: "https://enjoy-2ffdf-default-rtdb.firebaseio.com",
+  projectId: "enjoy-2ffdf",
+  storageBucket: "enjoy-2ffdf.firebasestorage.app",
+  messagingSenderId: "156560412373",
+  appId: "1:156560412373:web:585f391b8b5059b2c29c5c"
+};
 
-        function resetPassword() {
-            const storedUserData = JSON.parse(localStorage.getItem('userData'));
-            const email = document.getElementById('reset-email').value;
-            const newPassword = document.getElementById('new-password').value;
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-            if (storedUserData && storedUserData.email === email) {
-                storedUserData.password = newPassword;
-                localStorage.setItem('userData', JSON.stringify(storedUserData));
-                alert('Password reset successful! Please login.');
-                showLogin();
-            } else {
-                alert('Email not registered!');
-            }
-        }
+  const showError = (id, text) => {
+    document.getElementById(id).textContent = text;
+  };
+  const clearError = (id) => {
+    document.getElementById(id).textContent = "";
+  };
 
-        window.onload = function() {
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                window.location.href = "home.html";
-            }
-        }
-    </script>
+  const btnSignIn = document.getElementById('btnSignIn');
+  const btnSignUp = document.getElementById('btnSignUp');
+  const tabSignIn = document.getElementById('tabSignIn');
+  const tabSignUp = document.getElementById('tabSignUp');
+
+  btnSignIn.addEventListener('click',()=>{
+    btnSignIn.classList.add('active');
+    btnSignUp.classList.remove('active');
+    tabSignIn.style.display = 'block';
+    tabSignUp.style.display = 'none';
+    clearError('signInError');
+    clearError('signUpError');
+  });
+
+  btnSignUp.addEventListener('click',()=>{
+    btnSignUp.classList.add('active');
+    btnSignIn.classList.remove('active');
+    tabSignUp.style.display = 'block';
+    tabSignIn.style.display = 'none';
+    clearError('signUpError');
+    clearError('signInError');
+  });
+
+  // Toggle password visibility
+  const togglePass = (inpId, togId) => {
+    const input = document.getElementById(inpId);
+    const toggle = document.getElementById(togId);
+    toggle.onclick = () => {
+      if(input.type === 'password'){
+        input.type = 'text';
+        toggle.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        toggle.textContent = '👁️';
+      }
+    }
+  }
+  togglePass('signInPassword','toggleSignInPass');
+
+  // Toggle signIn email/mobile input type + placeholder
+  const signInEmailInput = document.getElementById('signInEmail');
+  const signInWithMobileLink = document.getElementById('signInWithMobileLink');
+  const forgotPassLink = document.getElementById('forgotPassLink');
+
+  signInWithMobileLink.addEventListener('click',(e)=>{
+    e.preventDefault();
+    signInEmailInput.type = 'tel';
+    signInEmailInput.placeholder = 'Enter your mobile number';
+  });
+
+  forgotPassLink.addEventListener('click',(e)=>{
+    e.preventDefault();
+    signInEmailInput.type = 'email';
+    signInEmailInput.placeholder = 'Email';
+    const email = prompt('Enter your email for password reset:');
+    if(!email) return;
+    sendPasswordResetEmail(auth,email)
+      .then(()=>alert('Password reset email sent!'))
+      .catch(err=>alert("Failed: "+err.message));
+  });
+
+  // Sign In logic
+  document.getElementById('signInSubmit').addEventListener('click',async()=>{
+    clearError('signInError');
+    const email = signInEmailInput.value.trim();
+    const password = document.getElementById('signInPassword').value;
+    if(!email){ alert('Please enter email or mobile'); return;}
+    if(!password){ alert('Please enter password'); return;}
+    try{
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = 'home.html';
+    }catch(e){
+      alert('Sign in failed: '+e.message);
+    }
+  });
+
+  // Sign Up logic
+  document.getElementById('signUpSubmit').addEventListener('click', async () => {
+    clearError('signUpError');
+    const prefix = document.getElementById('signUpEmailPrefix').value.trim();
+    const email = prefix + '@gmail.com';
+    const mobile = document.getElementById('signUpMobile').value.trim();
+    const password = document.getElementById('signUpPassword').value;
+
+    if(!/^[a-zA-Z0-9._]+$/.test(prefix)){
+      showError('signUpError','Invalid email prefix');
+      return;
+    }
+    if(!/^d{10}$/.test(mobile)){
+      showError('signUpError','Mobile number must be 10 digits');
+      return;
+    }
+    if(!password){
+      showError('signUpError','Please enter password');
+      return;
+    }
+    try{
+      await createUserWithEmailAndPassword(auth,email,password);
+      window.location.href = 'home.html';
+    }catch(e){
+      showError('signUpError',e.message);
+    }
+  });
+
+  // Google sign-in
+  document.getElementById('googleSignIn').addEventListener('click', async () => {
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+      window.location.href = 'home.html';
+    } catch (e) {
+      alert("Google sign-in failed: "+e.message);
+    }
+  });
+
+  // Facebook sign-in
+  document.getElementById('facebookSignIn').addEventListener('click', async () => {
+    try {
+      await signInWithPopup(auth, new FacebookAuthProvider());
+      window.location.href = 'home.html';
+    } catch (e) {
+      alert("Facebook sign-in failed: "+e.message);
+    }
+  });
+
+  onAuthStateChanged(auth, user => {
+    if(user) {
+      window.location.href = 'home.html';
+    }
+  });
+</script>
+
 </body>
 </html>
