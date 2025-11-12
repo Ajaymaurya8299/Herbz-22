@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kharif Crops Cultivation</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      background: linear-gradient(180deg, #e9ffe9 0%, #d4f7d4 100%);
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .crop-card {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 25px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .crop-card:active { transform: translateY(1px); }
+    .crop-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(76, 175, 80, 0.25);
+      background: #e8f5e9;
+    }
+    .crop-card h2 { color: #2e7d32; font-size: 18px; margin-bottom: 8px; }
+    .crop-card small { color: #4caf50; font-size: 13px; }
+    footer { margin-top: 30px; color: #2e7d32; font-size: 13px; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    .crop-card { animation: fadeIn 0.45s ease; }
+  </style>
+</head>
+<body>
+
+  <div class="grid">
+    <!-- Cereals -->
+    <!-- Example: external Drive PDF -->
+     <div class="crop-card" role="button" tabindex="0" onclick="openPage('paddy.html')">
+      <h2>Rice</h2><small>Cultivation of Rice</small>
+    </div>
+
+    <!-- For internal pages use relative filenames like 'maize.html' -->
+    <div class="crop-card" role="button" tabindex="0"
+         onclick="openPage('makka.html')"
+         onkeypress="if(event.key==='Enter' || event.key===' ') openPage('maize.html')">
+      <h2>Maize</h2><small>Cultivation of Maize</small>
+    </div>
+
+    <div class="crop-card" role="button" tabindex="0"
+         onclick="openPage('sorghum.html')"
+         onkeypress="if(event.key==='Enter' || event.key===' ') openPage('sorghum.html')">
+      <h2>Sorghum</h2><small>Cultivation of Sorghum</small>
+    </div>
+
+    <div class="crop-card" role="button" tabindex="0"
+         onclick="openPage('pearl-millet.html')"
+         onkeypress="if(event.key==='Enter' || event.key===' ') openPage('pearl-millet.html')">
+      <h2>Pearl Millet</h2><small>Cultivation of Pearl Millet</small>
+    </div>
+
+    <div class="crop-card" role="button" tabindex="0"
+         onclick="openPage('finger-millet.html')"
+         onkeypress="if(event.key==='Enter' || event.key===' ') openPage('finger-millet.html')">
+      <h2>Finger Millet</h2><small>Cultivation of Finger Millet</small>
+    </div>
+
+    <!-- Pulses -->
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('pigeon-pea.html')">
+      <h2>Pigeon Pea</h2><small>Cultivation of Pigeon Pea</small>
+    </div>
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('mung-bean.html')">
+      <h2>Mung Bean</h2><small>Cultivation of Mung Bean</small>
+    </div>
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('urd-bean.html')">
+      <h2>Urd Bean</h2><small>Cultivation of Urd Bean</small>
+    </div>
+
+    <!-- Oilseeds -->
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('sesame.html')">
+      <h2>Sesame</h2><small>Cultivation of Sesame</small>
+    </div>
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('groundnut.html')">
+      <h2>Groundnut</h2><small>Cultivation of Groundnut</small>
+    </div>
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('soybean.html')">
+      <h2>Soybean</h2><small>Cultivation of Soybean</small>
+    </div>
+
+    <!-- Commercial Crops -->
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('cotton.html')">
+      <h2>Cotton</h2><small>Cultivation of Cotton</small>
+    </div>
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('jute.html')">
+      <h2>Jute</h2><small>Cultivation of Jute</small>
+    </div>
+
+    <!-- Fodder Crops -->
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('cowpea.html')">
+      <h2>Cowpea</h2><small>Cultivation of Cowpea</small>
+    </div>
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('cluster-bean.html')">
+      <h2>Cluster Bean</h2><small>Cultivation of Cluster Bean</small>
+    </div>
+    <div class="crop-card" role="button" tabindex="0" onclick="openPage('napier-grass.html')">
+      <h2>Napier Grass</h2><small>Cultivation of Napier Grass</small>
+    </div>
+  </div>
+
+  <footer>© 2025 Kharif Crops Learning Portal</footer>
+
+  <script>
+    /**
+     * openPage(url)
+     * - यदि URL पूर्ण (http/https) है -> नया टैब में खोलेगा
+     * - यदि relative filename है (जैसे maize.html) -> उसी टैब में नेविगेट करेगा
+     */
+    function openPage(url) {
+      try {
+        if (typeof url !== 'string') return;
+        const trimmed = url.trim();
+        if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+          // external link: open in new tab (blank) for safer UX
+          window.open(trimmed, '_blank', 'noopener,noreferrer');
+        } else {
+          // internal relative page
+          window.location.href = trimmed;
+        }
+      } catch (e) {
+        console.error('openPage error:', e);
+      }
+    }
+  </script>
+</body>
+</html>
