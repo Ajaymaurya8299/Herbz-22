@@ -51,41 +51,37 @@
     }
   </style>
 </head>
+
 <body>
   <div class="app-header">Notes</div>
 
   <div class="button-container">
-    <button class="note-button" onclick="openPage('kharifcrop.html)">Crop Production Technology I (Kharif Crops)</button>
+    <button class="note-button" onclick="openPage('kharifcrop.html')">Crop Production Technology I (Kharif Crops)</button>
     <button class="note-button" onclick="openPage('')">Fundamentals of Plant Breeding</button>
     <button class="note-button" onclick="openPage('microbiology.html')">Agricultural Microbiology</button>
     <button class="note-button" onclick="openPage('')">Agricultural Finance and Co-Operation</button>
     <button class="note-button" onclick="openPage('')">Farm Machinery and Power</button>
-    <button class="note-button" onclick="openPage('')">Principles of Integrated Disease 
-
-Management</button>
-    <button class="note-button" onclick="openPage('')">Environmental Studies & Disaster 
-
-Management</button>
+    <button class="note-button" onclick="openPage('')">Principles of Integrated Disease Management</button>
+    <button class="note-button" onclick="openPage('')">Environmental Studies & Disaster Management</button>
     <button class="note-button" onclick="openPage('')">Statistical Methods</button>
-    <button class="note-button" onclick="openPage('')">Dairy Science </button>
-
+    <button class="note-button" onclick="openPage('')">Dairy Science</button>
+  </div>
 
   <script>
-    function openPage(url) 
-      // अगर कुछ नहीं दिया गया है
+    function openPage(url) {
+
       if (!url || url.trim() === '') {
         alert("🔹 यह पेज अभी उपलब्ध नहीं है!");
         return;
       }
 
-      // अगर यह Google Drive या कोई पूर्ण URL है
       if (url.startsWith('http://') || url.startsWith('https://')) {
-        window.open(url, '_blank'); // नया टैब खोलेगा
+        window.open(url, '_blank');
       } else {
-        // अन्यथा यह local HTML पेज है
         window.location.href = url;
       }
     }
   </script>
+
 </body>
 </html>
