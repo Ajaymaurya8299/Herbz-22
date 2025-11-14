@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agricultural Microbiology (Theory)</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #e9ffe9 0%, #d4f7d4 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: #1b5e20;
+      font-size: 26px;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #388e3c;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .topic-card {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 25px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .topic-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(76, 175, 80, 0.25);
+      background: #e8f5e9;
+    }
+
+    .topic-card h2 {
+      color: #2e7d32;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .topic-card small {
+      color: #4caf50;
+      font-size: 13px;
+    }
+
+    footer {
+      margin-top: 30px;
+      color: #2e7d32;
+      font-size: 13px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .topic-card {
+      animation: fadeIn 0.5s ease;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="grid">
+    <!-- Topics List -->
+    <div class="topic-card" onclick="openPage('introduction.html')">
+      <h2>Introduction of Microbial World</h2>
+      <small>सूक्ष्मजीव जगत का परिचय</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('bacteria.html')">
+      <h2>Bacteria</h2>
+      <small>जीवाणु की संरचना व प्रकार</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('bacterial__genetic.html')">
+      <h2>Bacterial Genetics</h2>
+      <small>जीवाणुओं की आनुवंशिकी</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('three.html')">
+      <h2>Role of Microbes in Soil Fertility</h2>
+      <small>मिट्टी की उर्वरता व फसल उत्पादन</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('savan.html')">
+      <h2>Microbes in Human Welfare</h2>
+      <small>मानव कल्याण में सूक्ष्मजीव</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('soilorganism.html')">
+      <h2>Microbial Degradation of Organic Matter</h2>
+      <small>जैविक पदार्थों का अपघटन</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('cellulose-microbes.html')">
+      <h2>Cellulose Decomposing Microbes</h2>
+      <small>कम्पोस्टिंग व वर्मी-कम्पोस्टिंग सूक्ष्मजीव</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('soil-organisms.html')">
+      <h2>Soil Organisms</h2>
+      <small>मिट्टी के सूक्ष्म व स्थूल जीव</small>
+    </div>
+
+    <div class="topic-card" onclick="openPage('summary.html')">
+      <h2>Summary / Key Points</h2>
+      <small>महत्वपूर्ण सारांश</small>
+    </div>
+  </div>
+
+  <footer>© 2025 Agricultural Notes Portal | SSC-211</footer>
+
+  <script>
+    function openPage(url) {
+      if (!url || url.trim() === '') {
+        alert('यह पेज अभी उपलब्ध नहीं है!');
+        return;
+      }
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
